@@ -30,5 +30,5 @@ if (!window.dom) {
   import("../domjs/setPropsAll/setPropsAll.js");
   import("../domjs/supplantHTML/supplantHTML.js");
   import("../domjs/toggleClass/toggleClass.js");
-  import("../domjs/domUtils/domUtils.js");
+  import("../domjs/domUtils.js");
 }
