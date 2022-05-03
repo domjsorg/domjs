@@ -4,13 +4,13 @@ const OUTPUT_PATH = '/demo';
 const AREAS = ['area', 'area-desc', 'area-code'];
 const TYPES = ['script', 'description', 'code'];
 
-window.demotools.manager = {
+window.demodom.manager = {
     route: {
         name: 'DOMHomeDemo',
         path: OUTPUT_PATH,
         action: () => {
             AREAS.forEach(area => {
-                demotools.manager.clearArea(area)
+                demodom.manager.clearArea(area)
             });
         }
     },
@@ -61,7 +61,7 @@ window.demotools.manager = {
         ]
 
         options.forEach(option => {
-            demotools.manager.hidrateArea(option);
+            demodom.manager.hidrateArea(option);
         })
         
     },
@@ -71,20 +71,20 @@ window.demotools.manager = {
         let div = document.createElement('div');
         div.id = object.id;
 
-        demotools.manager.clearArea(object.area);
+        demodom.manager.clearArea(object.area);
         area.appendChild(div);
 
         switch (object.type) {
             case TYPES[0]:
-                demotools.manager.applyScript(object.component[object.type], object.id);
+                demodom.manager.applyScript(object.component[object.type], object.id);
                 break;
         
             case TYPES[1]:
-                demotools.manager.applyDesc(object.component[object.type], object.id);
+                demodom.manager.applyDesc(object.component[object.type], object.id);
                 break;
             
             case TYPES[2]:
-                demotools.manager.applyCode(object.component[object.type], object.id);
+                demodom.manager.applyCode(object.component[object.type], object.id);
                 break;
         }
         
@@ -116,18 +116,18 @@ window.demotools.manager = {
             return {
                 name: component.name,
                 path: `${OUTPUT_PATH}/${component.name.toLowerCase()}`,
-                action: () => { demotools.manager.runComponent(component); }
+                action: () => { demodom.manager.runComponent(component); }
             }
         })
 
-        routes.push(demotools.manager.route);
+        routes.push(demodom.manager.route);
     
         tools.router.routes(routes);
     }
 }
 
-demotools.manager.createHTMLbase();
+demodom.manager.createHTMLbase();
 
-demotools.manager.showComponentsList(demotools.components);
+demodom.manager.showComponentsList(demodom.components);
 
-demotools.manager.addRoutes(demotools.components);
+demodom.manager.addRoutes(demodom.components);

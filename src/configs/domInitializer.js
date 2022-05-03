@@ -4,6 +4,7 @@ if (!window.mambo) {
   };
 }
 if (!window.dom) {
+  window.dom = {};
   import("../domjs/addClass/addClass.js");
   import("../domjs/append/append.js");
   import("../domjs/appendSelfToParentTag/appendSelfToParentTag.js");
