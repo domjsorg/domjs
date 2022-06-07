@@ -3,6 +3,12 @@ if (!window.mambo) {
     develop: false
   };
 }
+if (!window.tools) {
+	import("../deps/mambo-tools-last-min.js");
+}
+if (!window.ui) {
+	import("../deps/mambo-ui-last-min.js");
+}
 if (!window.dom) {
   window.dom = {};
 //@
