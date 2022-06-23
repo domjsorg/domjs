@@ -1,5 +1,5 @@
-window.dom.createTag = (name, config) => {
-    const utils = window.dom.utils;
+dom.createTag = (name, config) => {
+    const utils = dom.utils;
     const newEl = utils.createTagNS(name);
 
     if (!config || !utils.isObject(config)) {

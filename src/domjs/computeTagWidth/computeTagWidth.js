@@ -1,5 +1,5 @@
-window.dom.computeTagWidth = (tag, parentTag) => {
-    const utils = window.dom.utils;
+dom.computeTagWidth = (tag, parentTag) => {
+    const utils = dom.utils;
     const style = window.getComputedStyle(tag, null);
 
     if (!style) {

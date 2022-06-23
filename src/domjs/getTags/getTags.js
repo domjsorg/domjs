@@ -1,5 +1,5 @@
-window.dom.getTags = (selector, parent) => {
-    const utils = window.dom.utils;
+dom.getTags = (selector, parent) => {
+    const utils = dom.utils;
 
     if (typeof selector !== "string") {
         return selector;

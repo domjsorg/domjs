@@ -1,5 +1,5 @@
-window.dom.remove = (selector) => {
-    const utils = window.dom.utils;
+dom.remove = (selector) => {
+    const utils = dom.utils;
     if (typeof selector === "string") {
         if (utils.hasSingleID(selector)) {
             remove(getTag(selector));

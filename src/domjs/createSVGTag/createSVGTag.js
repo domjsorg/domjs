@@ -1,5 +1,5 @@
-window.dom.createSVGTag = (name, config) => {
-    const utils = window.dom.utils;
+dom.createSVGTag = (name, config) => {
+    const utils = dom.utils;
     const newEl = utils.createTagNS(name, "SVG");
 
     if (!config || !utils.isObject(config))

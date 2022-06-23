@@ -1,4 +1,4 @@
-window.dom.appendSelfToParentTag = (parentTag, self, prepend) => {
+dom.appendSelfToParentTag = (parentTag, self, prepend) => {
     const parentEle = dom.getTag(parentTag);
     if (parentEle) {
         dom.append(parentEle, self, prepend);

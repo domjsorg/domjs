@@ -1,5 +1,5 @@
-window.dom.removeClassAll = (tags, cls) => {
-    const utils = window.dom.utils;
+dom.removeClassAll = (tags, cls) => {
+    const utils = dom.utils;
     if (utils.isArray(tags)) {
         for (let index = 0; index < tags.length; index++) {
             dom.removeClass(tags[index], cls);

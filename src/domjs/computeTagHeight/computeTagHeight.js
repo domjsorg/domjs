@@ -1,5 +1,5 @@
-window.dom.computeTagHeight = (tag) => {
-    const utils = window.dom.utils;
+dom.computeTagHeight = (tag) => {
+    const utils = dom.utils;
     const style = window.getComputedStyle(tag, null);
 
     if (!style) {
