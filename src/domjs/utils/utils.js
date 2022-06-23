@@ -1,4 +1,4 @@
-window.dom.utils = new function() {
+dom.utils = new function() {
     "use strict";
 
     this.append = append;

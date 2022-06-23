@@ -1,4 +1,4 @@
-window.dom.supplantHTML = (html, data) => {
+dom.supplantHTML = (html, data) => {
     return html.replace(/{([^{}]*)}/g,
         function (a, b) {
             let r = dom.utils.getProperty(b, data);

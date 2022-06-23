@@ -1,3 +1,3 @@
-window.dom.prepend = (selector, content) => {
+dom.prepend = (selector, content) => {
     dom.append(selector, content, true);
 }

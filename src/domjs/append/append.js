@@ -1,4 +1,4 @@
-window.dom.append = (selector, content, prepend) => {
+dom.append = (selector, content, prepend) => {
 
     const self = window.dom
     const utils = self.utils

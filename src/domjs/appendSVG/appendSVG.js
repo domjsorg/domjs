@@ -1,4 +1,4 @@
-window.dom.appendSVG = (selector, content, prepend) => {
+dom.appendSVG = (selector, content, prepend) => {
     if (!content || !selector) {
         console.error("DOM.addSVGChild(): missing parameter 'selector', 'content' or both.");
         return;
