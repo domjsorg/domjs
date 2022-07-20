@@ -6,33 +6,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="DomJS documentation">
     <base href="/">
-    <style>
-        body {
-            --background-color: #120b1b;
-            --font-size: 14px;
-            background-color: var(--background-color);
-            margin: auto;
-            font-size: var(--font-size);
-        }
-        .web-content {
-            height: 100vh;
-            display: grid;
-            align-items: center;
-        }
-    </style>
-    <title>Mambo UI docs</title>
-    <!-- build:css lib/mambo-ui-last-min.css -->
-    <!--/build-->
-    <!-- build:css themes/dark.css -->
-    <!--/build-->
-    <!-- build:css demos/demos_styles.css -->
-    <!--/build-->
-    <!-- build:js lib/domjs-last-min.js -->
-    <!--/build-->
+    <title>DomJS docs</title>
+    
+    <link rel="stylesheet" href="https://www.scotti.tech/lib/mambo-ui-min-v06-30-22-1-00.css">
+    
+    <link rel="stylesheet" href="src/themes/dark.css">
+
+    <link rel="stylesheet" href="src/demos/demos.css">
+
+    <script src="https://www.scotti.tech/lib/mambo-tools-min-v06-30-22-1-00.js"></script>
+    <script src="https://www.scotti.tech/lib/mambo-ui-min-v06-30-22-1-00.js"></script>
+    
+    <script>
+        const dom = {};
+    </script>
+
+    <script src="src/domjs/addClass/addClass.js"></script>
+    <script src="src/domjs/append/append.js"></script>
+    <script src="src/domjs/appendSelfToParentTag/appendSelfToParentTag.js"></script>
+    <script src="src/domjs/appendSVG/appendSVG.js"></script>
+    <script src="src/domjs/computeTagHeight/computeTagHeight.js"></script>
+    <script src="src/domjs/computeTagWidth/computeTagWidth.js"></script>
+    <script src="src/domjs/createSVGTag/createSVGTag.js"></script>
+    <script src="src/domjs/createTag/createTag.js"></script>
+    <script src="src/domjs/empty/empty.js"></script>
+    <script src="src/domjs/getTag/getTag.js"></script>
+    <script src="src/domjs/getTags/getTags.js"></script>
+    <script src="src/domjs/hasClass/hasClass.js"></script>
+    <script src="src/domjs/parse/parse.js"></script>
+    <script src="src/domjs/prepend/prepend.js"></script>
+    <script src="src/domjs/remove/remove.js"></script>
+    <script src="src/domjs/removeAll/removeAll.js"></script>
+    <script src="src/domjs/removeAttrs/removeAttrs.js"></script>
+    <script src="src/domjs/removeAttrsAll/removeAttrsAll.js"></script>
+    <script src="src/domjs/removeClass/removeClass.js"></script>
+    <script src="src/domjs/removeClassAll/removeClassAll.js"></script>
+    <script src="src/domjs/setAttr/setAttr.js"></script>
+    <script src="src/domjs/setAttrAll/setAttrAll.js"></script>
+    <script src="src/domjs/setProps/setProps.js"></script>
+    <script src="src/domjs/setPropsAll/setPropsAll.js"></script>
+    <script src="src/domjs/supplantHTML/supplantHTML.js"></script>
+    <script src="src/domjs/toggleClass/toggleClass.js"></script>
+    <script src="src/domjs/utils/utils.js"></script>
+
+    <script src="src/demos/demos.js"></script>
 </head>
 <body>
     <div class="web-content"></div>
-    <!-- build:js demos/demodomjs.js -->
-    <!--/build-->
 </body>
 </html>

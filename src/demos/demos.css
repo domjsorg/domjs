@@ -1,6 +1,18 @@
+body {
+    --background-color: #120b1b;
+    --font-size: 14px;
+    background-color: var(--background-color);
+    margin: auto;
+    font-size: var(--font-size);
+}
+.web-content {
+    height: 100vh;
+    display: grid;
+    align-items: center;
+}
 .mambo-docs-container {
     /* --background-color: #120b1b; */
-    --section-color: white;
+    --section-color: #296484;
     /* --font-size: 14px; */
     /* background-color: var(--background-color); */
     position: relative;
@@ -139,7 +151,7 @@
 }
 #sidebar li:hover {
     color: var(--section-color);
-    background-color: gray;
+    background-color: white;
     padding-left: 15px;
 }
 
@@ -150,6 +162,9 @@
     width: 96%;
     height: 90%;
     overflow: auto;
+}
+#area {
+    width: 100%;
 }
 #area > * {
     display: flex;
@@ -184,7 +199,6 @@
 .mambo-btn:hover {
     background-color: var(--section-color);
     border-color: var(--section-color);
-    color: gray;
     font-stretch:expanded;
 }
 .transparent {

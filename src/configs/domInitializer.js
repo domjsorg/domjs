@@ -1,10 +1,4 @@
-if (!window.mambo) {
-  window.mambo = {
-    develop: false
-  };
-}
-if (!window.dom) {
-  window.dom = {};
+window.dom = {};
 //@
 	import("../domjs/addClass/addClass.js");
 	import("../domjs/append/append.js");
@@ -34,4 +28,3 @@ if (!window.dom) {
 	import("../domjs/toggleClass/toggleClass.js");
 	import("../domjs/utils/utils.js");
 //!
-}
