@@ -1,6 +1,6 @@
 dom.append = (selector, content, prepend) => {
 
-    const self = window.dom
+    const self = dom
     const utils = self.utils
 
     if (!content || !selector) {
