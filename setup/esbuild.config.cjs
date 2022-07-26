@@ -1,6 +1,5 @@
 
 const fs = require('fs');
-const { exec } = require("child_process");
 const esbuild = require("esbuild");
 const config = require("./config.cjs")
 
@@ -10,31 +9,26 @@ function buildLib() {
 
   console.log("Building library...");
 
-  // Uncompressed
-  const optionsUncompressed = {
-    stdin: { contents: '' },
-    banner: { js: config.COPYRIGHT },
-    inject: getLibFiles(),
-    entryNames: config.LIB_FILE_NAME,
-    outdir: `${config.LIB_DIR}/${libVersion}/${config.LIB_UNCOMPRESSED}`
-  };
+  const headerFn = `\nfunction domJS() { \nconst dom = {};`;
+  const footerFn = `\nreturn dom;\n}`;
+
   // Bundle Native
   const optionsBundle = {
-    ...optionsUncompressed,
-    outdir: `${config.LIB_DIR}/${libVersion}/${config.LIB_BUNDLE}`,
-    bundle: true
-  };
-  // Minified bundle
-  const optionsMinify = {
-    ...optionsBundle,
-    entryNames: config.LIB_FILE_NAME_MIN,
-    outdir: `${config.LIB_DIR}/${libVersion}/${config.LIB_MIN}`,
-    minify: true
+    stdin: { contents: '' },
+    banner: { js: config.COPYRIGHT + headerFn },
+    footer: { js: footerFn },
+    inject: getLibFiles(),
+    entryNames: config.LIB_FILE_NAME,
+    outdir: `${config.LIB_DIR}/${libVersion}`,
   };
   // Minified bundle with sourcemap
   const optionsMinifyMap = {
-    ...optionsMinify,
-    outdir: `${config.LIB_DIR}/${libVersion}/${config.LIB_MAP}`,
+    ...optionsBundle,
+    banner: { js: config.COPYRIGHT + headerFn.replace(/\r?\n|\r/g, "") },
+    footer: { js: footerFn.replace(/\r?\n|\r/g, "") },
+    entryNames: config.LIB_FILE_NAME_MIN,
+    outdir: `${config.LIB_DIR}/${libVersion}`,
+    minify: true,
     sourcemap: true
   }
 
@@ -46,16 +40,8 @@ function buildLib() {
     sourcemap: true
   };
 
-  esbuild.build(optionsUncompressed).then(result => {
-    console.log("Uncompressed JS Lib: Build complete!");
-  });
-
   esbuild.build(optionsBundle).then(result => {
     console.log("Bundle JS Lib: Build complete!");
-  });
-
-  esbuild.build(optionsMinify).then(result => {
-    console.log("JS Lib Minify: Build complete!");
   });
 
   esbuild.build(optionsMinifyMap).then(result => {
@@ -69,18 +55,16 @@ function buildLib() {
 }
 
 function getLibFiles() {
-  const arrFiles = [
-    `${config.SRC_DIR}/configs/domInit.js`
-  ];
-  const files = fs.readdirSync(`${config.SRC_DIR}/domjs`); 
+  const arrFiles = [];
+  const files = fs.readdirSync(`${config.SRC_DOMJS}`); 
   files.forEach(file => {
-    let component = `${config.SRC_DIR}/domjs/${file}`;
+    let component = `${config.SRC_DOMJS}/${file}`;
     let componentName = file;
     if (fs.lstatSync(component).isDirectory() && !file.startsWith('_')) {
       let componentFiles = fs.readdirSync(component);
       componentFiles.forEach(filejs => {
         if (filejs.endsWith(".js")) {
-          const filepath = `${config.SRC_DIR}/domjs/${componentName}/${filejs}`;
+          const filepath = `${config.SRC_DOMJS}/${componentName}/${filejs}`;
           arrFiles.push(filepath);
         }
       });
