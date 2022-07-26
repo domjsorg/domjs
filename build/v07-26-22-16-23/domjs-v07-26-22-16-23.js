@@ -14,10 +14,11 @@
 *  limitations under the License.
 
 *  @author Alejandro Sebastian Scotti
-*  @version v07-25-22-16-54
+*  @version v07-26-22-16-23
 *******************************************/
 
-window.dom = {};
+function domJS() { 
+const dom = {};
 dom.addClass = (tag, cls) => {
   let ele = dom.getTag(tag);
   if (!dom.hasClass(ele, cls)) {
@@ -481,3 +482,6 @@ dom.utils = new function() {
     }
   }
 }();
+
+return dom;
+}
