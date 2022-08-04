@@ -1,6 +1,4 @@
-const PORT_DEV = 8000;
-const PORT = process.env.PORT || PORT_DEV;
-
+const PORT = process.env.PORT || 8000;
 const LIB_DIR = "build";
 const LIB_NAME = "domjs";
 const LIB_VERSION = "latest" // `v${dateFormat()}`;
@@ -32,17 +30,13 @@ const COPYRIGHT = `/******************************************
 
 module.exports = {
     PORT,
-    PORT_DEV,
-    
     LIB_DIR,
     LIB_NAME,
     LIB_VERSION,
     LIB_FILE_NAME,
     LIB_FILE_NAME_MIN,
-
     SRC_DIR,
     SRC_DOMJS,
-
     COPYRIGHT
 }
 
