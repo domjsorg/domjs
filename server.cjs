@@ -24,18 +24,15 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const config = require("./setup/config.cjs");
- 
-const DIR = config.SRC_DIR;
-const PORT = config.PORT;
 
 //setting middleware
  
-app.use(`/${DIR}`, express.static(DIR));
+app.use(`/${config.SRC_DIR}`, express.static(config.SRC_DIR));
  
 // Return Index.html
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, `${DIR}/index.html`));
+  res.sendFile(path.resolve(__dirname, `${config.SRC_DIR}/index.html`));
 });
  
-app.listen(PORT);
-console.log(`Listening on http://localhost:${PORT}`);
+app.listen(config.PORT);
+console.log(`Listening on http://localhost:${config.PORT}`);
