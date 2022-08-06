@@ -1,16 +1,15 @@
 {
-  "name": "domjs",
-  "version": "0.0.1",
-  "description": "DomJS Library",
+	"name": "domjs",
+	"version": "0.0.1",
+	"description": "Dom.js Web App",
+  "author": "Alejandro Scotti, Scotti Corp, Open Source Community",
+  "license": "Apache 2.0",
   "main": "server.cjs",
   "type": "module",
   "scripts": {
     "build": "node ./setup/esbuild.config.cjs buildLib",
-    "dev": "node server.cjs",
     "start": "node server.cjs"
   },
-  "author": "Alejandro Scotti, Scotti Corp, Open Source Community",
-  "license": "Apache 2.0",
   "dependencies": {
     "express": "^4.17.1"
   },

@@ -1,10 +1,8 @@
-
-const fs = require('fs');
+const fs = require("fs");
 const esbuild = require("esbuild");
-const config = require("./config.cjs")
+const config = require("./esconfig.cjs");
 
 function buildLib() {
-
   const libVersion = config.LIB_VERSION;
 
   console.log("Building library...");
@@ -14,7 +12,7 @@ function buildLib() {
 
   // Bundle Native
   const optionsBundle = {
-    stdin: { contents: '' },
+    stdin: { contents: "" },
     banner: { js: config.COPYRIGHT + headerFn },
     footer: { js: footerFn },
     inject: getLibFiles(),
@@ -29,40 +27,39 @@ function buildLib() {
     entryNames: config.LIB_FILE_NAME_MIN,
     outdir: `${config.LIB_DIR}/${libVersion}`,
     minify: true,
-    sourcemap: true
-  }
+    sourcemap: true,
+  };
 
   const optionsCssThemes = {
-    entryPoints: ['src/themes/dark.css'],
+    entryPoints: ["src/themes/dark.css"],
     outdir: `${config.LIB_DIR}/themes`,
     minify: true,
     bundle: true,
-    sourcemap: true
+    sourcemap: true,
   };
 
-  esbuild.build(optionsBundle).then(result => {
+  esbuild.build(optionsBundle).then((result) => {
     console.log("Bundle JS Lib: Build complete!");
   });
 
-  esbuild.build(optionsMinifyMap).then(result => {
+  esbuild.build(optionsMinifyMap).then((result) => {
     console.log("JS Lib Minify mapped: Build complete!");
   });
 
-  esbuild.build(optionsCssThemes).then(result => {
+  esbuild.build(optionsCssThemes).then((result) => {
     console.log("Css Themes: Build complete!");
   });
-
 }
 
 function getLibFiles() {
   const arrFiles = [];
-  const files = fs.readdirSync(`${config.SRC_DOMJS}`); 
-  files.forEach(file => {
+  const files = fs.readdirSync(`${config.SRC_DOMJS}`);
+  files.forEach((file) => {
     let component = `${config.SRC_DOMJS}/${file}`;
     let componentName = file;
-    if (fs.lstatSync(component).isDirectory() && !file.startsWith('_')) {
+    if (fs.lstatSync(component).isDirectory() && !file.startsWith("_")) {
       let componentFiles = fs.readdirSync(component);
-      componentFiles.forEach(filejs => {
+      componentFiles.forEach((filejs) => {
         if (filejs.endsWith(".js")) {
           const filepath = `${config.SRC_DOMJS}/${componentName}/${filejs}`;
           arrFiles.push(filepath);
@@ -74,9 +71,9 @@ function getLibFiles() {
   return arrFiles;
 }
 
-for (var i=0; i<process.argv.length;i++) {
+for (var i = 0; i < process.argv.length; i++) {
   switch (process.argv[i]) {
-    case 'buildLib':
+    case "buildLib":
       buildLib();
       break;
   }
