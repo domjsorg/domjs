@@ -5,7 +5,7 @@ body {
     margin: auto;
     font-size: var(--font-size);
 }
-.web-content {
+tools-storyboard {
     height: 100vh;
     display: grid;
     align-items: center;
@@ -119,7 +119,7 @@ body {
     grid-template-rows: 15% 85%;
     height: 100%;
 }
-  
+
 #docs {
     display: grid;
     height: 100%;
@@ -174,7 +174,7 @@ body {
 }
 #area-desc {
     column-count: 2;
-} 
+}
 #area-code pre {
     background: black;
     color: white;
@@ -210,8 +210,8 @@ body {
     width: 10px;
 }
 ::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, .1); 
+    background: rgba(255, 255, 255, .1);
 }
 ::-webkit-scrollbar-thumb {
-    background: #888; 
+    background: #888;
 }
