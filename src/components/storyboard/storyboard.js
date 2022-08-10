@@ -71,7 +71,7 @@ function installStoryboard() {
   });
 
   async function getHtml() {
-    const html = await getScript(`src/storyboard/storyboard.html`);
+    const html = await getScript(`src/components/storyboard/storyboard.html`);
     demodomjs.html = html.fullcontent;
     window.dispatchEvent(cevt);
   }
