@@ -1,4 +1,9 @@
 dom.createTag = (name, config) => {
+    if (!name || name === "") {
+		console.error(`createTag() "name" argument is missing --> config: `, config);
+        return;
+	}
+
     const utils = dom.utils;
     const newEl = utils.createTagNS(name);
 
