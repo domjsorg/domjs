@@ -14,7 +14,7 @@
 *  limitations under the License.
 
 *  @author Alejandro Sebastian Scotti
-*  @version v08-13-22-13-42
+*  @version latest
 *******************************************/
 
 function domJS() { 
@@ -62,6 +62,15 @@ dom.append = (selector, content, prepend) => {
   if (utils.isNodeList(selector) || utils.isHTMLCollection(selector) || utils.isArray(selector)) {
     utils.appendChildAll(selector, content, prepend);
     return self2;
+  }
+};
+dom.appendSelfToParentTag = (parentTag, self2, prepend) => {
+  const parentEle = dom.getTag(parentTag);
+  if (parentEle) {
+    dom.append(parentEle, self2, prepend);
+    return parentEle;
+  } else {
+    return `${self2.localName}: parentTag element not found. DOM install failed.`;
   }
 };
 dom.appendSVG = (selector, content, prepend) => {
@@ -119,45 +128,6 @@ dom.computeTagWidth = (tag, parentTag) => {
   result += sumPad + sumMargin + tag.clientWidth;
   return result;
 };
-dom.content = (selector, content, prepend) => {
-  const self2 = dom;
-  const utils = self2.utils;
-  if (!content || !selector) {
-    console.error("DOM.addChild(): missing parameter 'selector', 'content' or both.");
-    return;
-  }
-  selector = dom.getTag(selector);
-  if (typeof content === "string") {
-    content = self2.parse(content);
-  }
-  if (utils.hasSingleID(selector)) {
-    selector = selector.replace("#", "");
-    utils.append(document.getElementById(selector), content, prepend);
-    return self2;
-  }
-  if (utils.hasSingleClass(selector)) {
-    const tags = document.getElementsByClassName(selector);
-    if (tags && tags.length > 0) {
-      utils.appendChildAll(tags, content, prepend);
-    }
-    return self2;
-  }
-  if (utils.isString(selector)) {
-    const tags = document.querySelectorAll(selector);
-    if (tags && tags.length > 0) {
-      utils.appendChildAll(tags, content, prepend);
-    }
-    return self2;
-  }
-  if (utils.isElement(selector) || utils.isNode(selector)) {
-    utils.append(selector, content, prepend);
-    return self2;
-  }
-  if (utils.isNodeList(selector) || utils.isHTMLCollection(selector) || utils.isArray(selector)) {
-    utils.appendChildAll(selector, content, prepend);
-    return self2;
-  }
-};
 dom.createSVGTag = (name, config) => {
   const utils = dom.utils;
   const newEl = utils.createTagNS(name, "SVG");
@@ -175,10 +145,6 @@ dom.createSVGTag = (name, config) => {
   return newEl;
 };
 dom.createTag = (name, config) => {
-  if (!name || name === "") {
-    console.error(`createTag() "name" argument is missing --> config: `, config);
-    return;
-  }
   const utils = dom.utils;
   const newEl = utils.createTagNS(name);
   if (!config || !utils.isObject(config)) {
