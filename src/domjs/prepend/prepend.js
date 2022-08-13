@@ -1,3 +1,3 @@
 dom.prepend = (selector, content) => {
-    dom.append(selector, content, true);
-}
+	dom.append(selector, content, true);
+};
