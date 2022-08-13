@@ -14,7 +14,7 @@
 *  limitations under the License.
 
 *  @author Alejandro Sebastian Scotti
-*  @version v08-13-22-13-42
+*  @version v08-13-22-14-07
 *******************************************/
 
 function domJS() { 
@@ -30,7 +30,7 @@ dom.append = (selector, content, prepend) => {
   const self2 = dom;
   const utils = self2.utils;
   if (!content || !selector) {
-    console.error("DOM.addChild(): missing parameter 'selector', 'content' or both.");
+    console.error("DOM.addChild(): missing parameter --> ", selector, content);
     return;
   }
   if (typeof content === "string") {
@@ -73,11 +73,11 @@ dom.appendSVG = (selector, content, prepend) => {
     let receptacle = document.createElement("div");
     let svgfragment = "<svg>" + content + "</svg>";
     receptacle.innerHTML = "" + svgfragment;
-    Array.prototype.slice.call(receptacle.childNodes[0].childNodes).forEach(function(el2) {
-      dom.append(selector, el2, prepend);
+    Array.prototype.slice.call(receptacle.childNodes[0].childNodes).forEach(function(el) {
+      dom.append(selector, el, prepend);
     });
   } else {
-    dom.append(selector, el, prepend);
+    dom.append(selector, content, prepend);
   }
 };
 dom.computeTagHeight = (tag) => {
@@ -263,9 +263,9 @@ dom.remove = (selector) => {
   const utils = dom.utils;
   if (typeof selector === "string") {
     if (utils.hasSingleID(selector)) {
-      remove(getTag(selector));
+      remove(dom.getTag(selector));
     } else {
-      dom.removeAll(getTags(selector));
+      dom.removeAll(dom.getTags(selector));
     }
   } else {
     remove(selector);
@@ -482,13 +482,13 @@ dom.utils = new function() {
     return element instanceof Element;
   }
   function isHTMLCollection(htmlCollection) {
-    return HTMLCollection.prototype.isPrototypeOf(htmlCollection);
+    return Object.prototype.isPrototypeOf.call(htmlCollection, HTMLCollection);
   }
   function isNode(node) {
     return node instanceof Node;
   }
   function isNodeList(nodeList) {
-    return NodeList.prototype.isPrototypeOf(nodeList);
+    return Object.prototype.isPrototypeOf.call(nodeList, NodeList);
   }
   function isObject(value) {
     return typeof value === "object";
