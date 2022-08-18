@@ -1,6 +1,6 @@
 dom.createTag = (name, config) => {
 	if (!name || name === "") {
-		console.error(`createTag() "name" argument is missing --> config: `, config);
+		console.error("createTag() 'name argument is missing --> config: ", config);
 		return;
 	}
 

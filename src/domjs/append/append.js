@@ -1,6 +1,5 @@
 dom.append = (selector, content, prepend) => {
-	const self = dom;
-	const utils = self.utils;
+	const utils = dom.utils;
 
 	if (!content || !selector) {
 		console.error("DOM.addChild(): missing parameter --> ", selector, content);
@@ -9,13 +8,13 @@ dom.append = (selector, content, prepend) => {
 
 	// Parse content if String type
 	if (typeof content === "string") {
-		content = self.parse(content);
+		content = dom.parse(content);
 	}
 
 	if (utils.hasSingleID(selector)) {
 		selector = selector.replace("#", "");
 		utils.append(document.getElementById(selector), content, prepend);
-		return self;
+		return dom;
 	}
 
 	if (utils.hasSingleClass(selector)) {
@@ -23,7 +22,7 @@ dom.append = (selector, content, prepend) => {
 		if (tags && tags.length > 0) {
 			utils.appendChildAll(tags, content, prepend);
 		}
-		return self;
+		return dom;
 	}
 
 	if (utils.isString(selector)) {
@@ -31,16 +30,16 @@ dom.append = (selector, content, prepend) => {
 		if (tags && tags.length > 0) {
 			utils.appendChildAll(tags, content, prepend);
 		}
-		return self;
+		return dom;
 	}
 
 	if (utils.isElement(selector) || utils.isNode(selector)) {
 		utils.append(selector, content, prepend);
-		return self;
+		return dom;
 	}
 
 	if (utils.isNodeList(selector) || utils.isHTMLCollection(selector) || utils.isArray(selector)) {
 		utils.appendChildAll(selector, content, prepend);
-		return self;
+		return dom;
 	}
 };

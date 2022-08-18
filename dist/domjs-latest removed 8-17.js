@@ -14,7 +14,7 @@
 *  limitations under the License.
 
 *  @author Alejandro Sebastian Scotti
-*  @version v08-17-22-22-30
+*  @version v08-13-22-14-07
 *******************************************/
 
 function domJS() { 
@@ -27,40 +27,41 @@ dom.addClass = (tag, cls) => {
   return dom;
 };
 dom.append = (selector, content, prepend) => {
-  const utils = dom.utils;
+  const self2 = dom;
+  const utils = self2.utils;
   if (!content || !selector) {
     console.error("DOM.addChild(): missing parameter --> ", selector, content);
     return;
   }
   if (typeof content === "string") {
-    content = dom.parse(content);
+    content = self2.parse(content);
   }
   if (utils.hasSingleID(selector)) {
     selector = selector.replace("#", "");
     utils.append(document.getElementById(selector), content, prepend);
-    return dom;
+    return self2;
   }
   if (utils.hasSingleClass(selector)) {
     const tags = document.getElementsByClassName(selector);
     if (tags && tags.length > 0) {
       utils.appendChildAll(tags, content, prepend);
     }
-    return dom;
+    return self2;
   }
   if (utils.isString(selector)) {
     const tags = document.querySelectorAll(selector);
     if (tags && tags.length > 0) {
       utils.appendChildAll(tags, content, prepend);
     }
-    return dom;
+    return self2;
   }
   if (utils.isElement(selector) || utils.isNode(selector)) {
     utils.append(selector, content, prepend);
-    return dom;
+    return self2;
   }
   if (utils.isNodeList(selector) || utils.isHTMLCollection(selector) || utils.isArray(selector)) {
     utils.appendChildAll(selector, content, prepend);
-    return dom;
+    return self2;
   }
 };
 dom.appendSVG = (selector, content, prepend) => {
@@ -80,49 +81,43 @@ dom.appendSVG = (selector, content, prepend) => {
   }
 };
 dom.computeTagHeight = (tag) => {
-  return new Promise((resolve) => {
-    const utils = dom.utils;
-    const style = window.getComputedStyle(tag, null);
-    if (!style) {
-      resolve();
-      return;
-    }
-    const topPad = style.getPropertyValue("padding-top");
-    const bottomPad = style.getPropertyValue("padding-bottom");
-    const topMargin = style.getPropertyValue("margin-top");
-    const bottomMargin = style.getPropertyValue("margin-bottom");
-    const sumPad = utils.getStyleNumValue(topPad) + utils.getStyleNumValue(bottomPad);
-    const sumMargin = utils.getStyleNumValue(topMargin) + utils.getStyleNumValue(bottomMargin);
-    resolve(sumPad + sumMargin + tag.clientHeight);
-  });
+  const utils = dom.utils;
+  const style = window.getComputedStyle(tag, null);
+  if (!style) {
+    return;
+  }
+  const topPad = style.getPropertyValue("padding-top");
+  const bottomPad = style.getPropertyValue("padding-bottom");
+  const topMargin = style.getPropertyValue("margin-top");
+  const bottomMargin = style.getPropertyValue("margin-bottom");
+  const sumPad = utils.getStyleNumValue(topPad) + utils.getStyleNumValue(bottomPad);
+  const sumMargin = utils.getStyleNumValue(topMargin) + utils.getStyleNumValue(bottomMargin);
+  return sumPad + sumMargin + tag.clientHeight;
 };
 dom.computeTagWidth = (tag, parentTag) => {
-  return new Promise((resolve) => {
-    const utils = dom.utils;
-    const style = window.getComputedStyle(tag, null);
-    if (!style) {
-      resolve();
-      return;
+  const utils = dom.utils;
+  const style = window.getComputedStyle(tag, null);
+  if (!style) {
+    return;
+  }
+  const leftPad = style.getPropertyValue("padding-left");
+  const rightPad = style.getPropertyValue("padding-right");
+  const leftMargin = style.getPropertyValue("margin-left");
+  const rightMargin = style.getPropertyValue("margin-right");
+  const sumPad = utils.getStyleNumValue(leftPad) + utils.getStyleNumValue(rightPad);
+  const sumMargin = utils.getStyleNumValue(leftMargin) + utils.getStyleNumValue(rightMargin);
+  let result = 0;
+  if (parentTag) {
+    const style2 = window.getComputedStyle(parentTag, null);
+    if (style2) {
+      const leftPad2 = style2.getPropertyValue("padding-left");
+      const rightPad2 = style2.getPropertyValue("padding-right");
+      const sumPad2 = utils.getStyleNumValue(leftPad2) + utils.getStyleNumValue(rightPad2);
+      result += sumPad2 + sumMargin;
     }
-    const leftPad = style.getPropertyValue("padding-left");
-    const rightPad = style.getPropertyValue("padding-right");
-    const leftMargin = style.getPropertyValue("margin-left");
-    const rightMargin = style.getPropertyValue("margin-right");
-    const sumPad = utils.getStyleNumValue(leftPad) + utils.getStyleNumValue(rightPad);
-    const sumMargin = utils.getStyleNumValue(leftMargin) + utils.getStyleNumValue(rightMargin);
-    let result = 0;
-    if (parentTag) {
-      const style2 = window.getComputedStyle(parentTag, null);
-      if (style2) {
-        const leftPad2 = style2.getPropertyValue("padding-left");
-        const rightPad2 = style2.getPropertyValue("padding-right");
-        const sumPad2 = utils.getStyleNumValue(leftPad2) + utils.getStyleNumValue(rightPad2);
-        result += sumPad2 + sumMargin;
-      }
-    }
-    result += sumPad + sumMargin + tag.clientWidth;
-    resolve(result);
-  });
+  }
+  result += sumPad + sumMargin + tag.clientWidth;
+  return result;
 };
 dom.content = (selector, content, prepend) => {
   const self2 = dom;
@@ -181,7 +176,7 @@ dom.createSVGTag = (name, config) => {
 };
 dom.createTag = (name, config) => {
   if (!name || name === "") {
-    console.error("createTag() 'name argument is missing --> config: ", config);
+    console.error(`createTag() "name" argument is missing --> config: `, config);
     return;
   }
   const utils = dom.utils;
