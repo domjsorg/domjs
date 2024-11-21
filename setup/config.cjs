@@ -6,15 +6,15 @@ const PUBLIC_DIRS = [IMAGE_DIR, "src", "dist"];
 const PORT = process.env.PORT || 8000;
 
 module.exports = {
-  OUTPUT_HTML,
-  PUBLIC_DIR,
-  PUBLIC_DIRS,
-  PORT,
-  system: {
-    publicDirectories: PUBLIC_DIRS,
-    imagesDirectory: IMAGE_DIR,
-    host: {
-      port: PORT,
-    },
-  },
+	OUTPUT_HTML,
+	PUBLIC_DIR,
+	PUBLIC_DIRS,
+	PORT,
+	system: {
+		publicDirectories: PUBLIC_DIRS,
+		imagesDirectory: IMAGE_DIR,
+		host: {
+			port: PORT,
+		},
+	},
 };

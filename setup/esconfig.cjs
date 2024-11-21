@@ -1,13 +1,15 @@
+const { version } = require("../package.json");
 const config = require("./config.cjs");
 const LIB_DIR = "build";
 const LIB_NAME = "domjs";
-const LIB_VERSION = `v${dateFormat()}`;
+const LIB_VERSION = version;
 const LIB_FILE_NAME = `${LIB_NAME}-${LIB_VERSION}`;
 const LIB_FILE_NAME_MIN = `${LIB_NAME}-min-${LIB_VERSION}`;
 const SRC_DOMJS = `${config.PUBLIC_DIR}/domjs`;
+const CURRENT_YEAR = new Date().getFullYear();
 
 const COPYRIGHT = `/******************************************
-*  Copyright 2022 Alejandro Sebastian Scotti, Scotti Corp.
+*  Copyright ${CURRENT_YEAR} Alejandro Sebastian Scotti, Scotti Corp.
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
@@ -27,21 +29,22 @@ const COPYRIGHT = `/******************************************
 `;
 
 module.exports = {
-  LIB_DIR,
-  LIB_NAME,
-  LIB_VERSION,
-  LIB_FILE_NAME,
-  LIB_FILE_NAME_MIN,
-  SRC_DOMJS,
-  COPYRIGHT,
+	LIB_DIR,
+	LIB_NAME,
+	LIB_VERSION,
+	LIB_FILE_NAME,
+	LIB_FILE_NAME_MIN,
+	SRC_DOMJS,
+	COPYRIGHT,
 };
 
 function dateFormat() {
-  const date = new Date();
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const year = date.getFullYear().toString().slice(-2);
-  const hour = date.getHours().toString().padStart(2, "0");
-  const minutes = date.getMinutes().toString().padStart(2, "0");
-  return [month, day, year, hour, minutes].join("-");
+	const date = new Date();
+	const day = date.getDate().toString().padStart(2, "0");
+	const month = (date.getMonth() + 1).toString().padStart(2, "0");
+	const year = date.getFullYear().toString().slice(-2);
+	const hour = date.getHours().toString().padStart(2, "0");
+	const minutes = date.getMinutes().toString().padStart(2, "0");
+
+	return [month, day, year, hour, minutes].join("-");
 }
