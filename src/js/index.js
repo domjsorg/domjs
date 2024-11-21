@@ -1,9 +1,8 @@
 // Instantiate global Object Manager and required Object instances
 const tools = mamboTools();
-const ui = mamboUI();
+const ui = mamboUI(domJS);
 
-const router = new tools.router();
-const object = new tools.object();
+const object = tools.object();
 object.save(tools.utils(), "utils");
 object.save(tools.string(), "string");
 object.save(tools.history(), "history");

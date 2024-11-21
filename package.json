@@ -8,6 +8,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "node ./setup/esbuild.config.cjs buildLib",
+		"build-documentation": "npm run build && node ./setup/build_documentation.cjs",
 		"start": "node server.cjs",
 		"validate": "npm-run-all --parallel eslint hlint clint",
 		"eslint": "npx eslint \"**/*.js\" --fix --ignore-pattern node_modules/",
