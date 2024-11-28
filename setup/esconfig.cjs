@@ -5,7 +5,7 @@ const LIB_NAME = "domjs";
 const LIB_VERSION = version;
 const LIB_FILE_NAME = `${LIB_NAME}-${LIB_VERSION}`;
 const LIB_FILE_NAME_MIN = `${LIB_NAME}-min-${LIB_VERSION}`;
-const SRC_DOMJS = `${config.PUBLIC_DIR}/domjs`;
+const SRC_DOMJS = "src/domjs";
 const CURRENT_YEAR = new Date().getFullYear();
 
 const COPYRIGHT = `/******************************************

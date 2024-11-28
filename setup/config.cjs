@@ -1,8 +1,8 @@
 // Constants
-const PUBLIC_DIR = "src";
+const PUBLIC_DIR = "public";
 const OUTPUT_HTML = `${PUBLIC_DIR}/index.html`;
 const IMAGE_DIR = `${PUBLIC_DIR}/img`;
-const PUBLIC_DIRS = [IMAGE_DIR, "src", "dist"];
+const PUBLIC_DIRS = [PUBLIC_DIR, "dist"];
 const PORT = process.env.PORT || 8000;
 
 module.exports = {

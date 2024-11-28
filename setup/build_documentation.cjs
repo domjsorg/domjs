@@ -9,10 +9,10 @@ const buildDir = path.join(__dirname, `../build/${version}`);
 const currentFileName = path.join(documentationDir, "documentation.md");
 const archivedFileName = path.join(archivedDir, `documentation-${version}.md`);
 const buildFileName = path.join(buildDir, "documentation.md");
-
+const CURRENT_YEAR = new Date().getFullYear();
 const COPYRIGHT_AND_TITLE = `<!--
 ******************************************
-*  Copyright 2024 Alejandro Sebastian Scotti, Scotti Corp.
+*  Copyright ${CURRENT_YEAR} Alejandro Sebastian Scotti, Scotti Corp.
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
