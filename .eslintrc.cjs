@@ -61,5 +61,9 @@ module.exports = {
 	},
 	globals: {
 		dom: true,
+		tools: true,
+		ui: true,
+		object: true,
+		marked: true,
 	},
 };

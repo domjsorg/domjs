@@ -1,5 +1,5 @@
 /******************************************
-*  Copyright 2022 Alejandro Sebastian Scotti, Scotti Corp.
+*  Copyright 2024 Alejandro Sebastian Scotti, Scotti Corp.
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 *  limitations under the License.
 
 *  @author Alejandro Sebastian Scotti
-*  @version v08-13-22-14-07
+*  @version 0.0.1
 *******************************************/
 
 function domJS() { 
@@ -27,41 +27,40 @@ dom.addClass = (tag, cls) => {
   return dom;
 };
 dom.append = (selector, content, prepend) => {
-  const self2 = dom;
-  const utils = self2.utils;
+  const utils = dom.utils;
   if (!content || !selector) {
     console.error("DOM.addChild(): missing parameter --> ", selector, content);
     return;
   }
   if (typeof content === "string") {
-    content = self2.parse(content);
+    content = dom.parse(content);
   }
   if (utils.hasSingleID(selector)) {
     selector = selector.replace("#", "");
     utils.append(document.getElementById(selector), content, prepend);
-    return self2;
+    return dom;
   }
   if (utils.hasSingleClass(selector)) {
     const tags = document.getElementsByClassName(selector);
     if (tags && tags.length > 0) {
       utils.appendChildAll(tags, content, prepend);
     }
-    return self2;
+    return dom;
   }
   if (utils.isString(selector)) {
     const tags = document.querySelectorAll(selector);
     if (tags && tags.length > 0) {
       utils.appendChildAll(tags, content, prepend);
     }
-    return self2;
+    return dom;
   }
   if (utils.isElement(selector) || utils.isNode(selector)) {
     utils.append(selector, content, prepend);
-    return self2;
+    return dom;
   }
   if (utils.isNodeList(selector) || utils.isHTMLCollection(selector) || utils.isArray(selector)) {
     utils.appendChildAll(selector, content, prepend);
-    return self2;
+    return dom;
   }
 };
 dom.appendSVG = (selector, content, prepend) => {
@@ -81,43 +80,49 @@ dom.appendSVG = (selector, content, prepend) => {
   }
 };
 dom.computeTagHeight = (tag) => {
-  const utils = dom.utils;
-  const style = window.getComputedStyle(tag, null);
-  if (!style) {
-    return;
-  }
-  const topPad = style.getPropertyValue("padding-top");
-  const bottomPad = style.getPropertyValue("padding-bottom");
-  const topMargin = style.getPropertyValue("margin-top");
-  const bottomMargin = style.getPropertyValue("margin-bottom");
-  const sumPad = utils.getStyleNumValue(topPad) + utils.getStyleNumValue(bottomPad);
-  const sumMargin = utils.getStyleNumValue(topMargin) + utils.getStyleNumValue(bottomMargin);
-  return sumPad + sumMargin + tag.clientHeight;
+  return new Promise((resolve) => {
+    const utils = dom.utils;
+    const style = window.getComputedStyle(tag, null);
+    if (!style) {
+      resolve();
+      return;
+    }
+    const topPad = style.getPropertyValue("padding-top");
+    const bottomPad = style.getPropertyValue("padding-bottom");
+    const topMargin = style.getPropertyValue("margin-top");
+    const bottomMargin = style.getPropertyValue("margin-bottom");
+    const sumPad = utils.getStyleNumValue(topPad) + utils.getStyleNumValue(bottomPad);
+    const sumMargin = utils.getStyleNumValue(topMargin) + utils.getStyleNumValue(bottomMargin);
+    resolve(sumPad + sumMargin + tag.clientHeight);
+  });
 };
 dom.computeTagWidth = (tag, parentTag) => {
-  const utils = dom.utils;
-  const style = window.getComputedStyle(tag, null);
-  if (!style) {
-    return;
-  }
-  const leftPad = style.getPropertyValue("padding-left");
-  const rightPad = style.getPropertyValue("padding-right");
-  const leftMargin = style.getPropertyValue("margin-left");
-  const rightMargin = style.getPropertyValue("margin-right");
-  const sumPad = utils.getStyleNumValue(leftPad) + utils.getStyleNumValue(rightPad);
-  const sumMargin = utils.getStyleNumValue(leftMargin) + utils.getStyleNumValue(rightMargin);
-  let result = 0;
-  if (parentTag) {
-    const style2 = window.getComputedStyle(parentTag, null);
-    if (style2) {
-      const leftPad2 = style2.getPropertyValue("padding-left");
-      const rightPad2 = style2.getPropertyValue("padding-right");
-      const sumPad2 = utils.getStyleNumValue(leftPad2) + utils.getStyleNumValue(rightPad2);
-      result += sumPad2 + sumMargin;
+  return new Promise((resolve) => {
+    const utils = dom.utils;
+    const style = window.getComputedStyle(tag, null);
+    if (!style) {
+      resolve();
+      return;
     }
-  }
-  result += sumPad + sumMargin + tag.clientWidth;
-  return result;
+    const leftPad = style.getPropertyValue("padding-left");
+    const rightPad = style.getPropertyValue("padding-right");
+    const leftMargin = style.getPropertyValue("margin-left");
+    const rightMargin = style.getPropertyValue("margin-right");
+    const sumPad = utils.getStyleNumValue(leftPad) + utils.getStyleNumValue(rightPad);
+    const sumMargin = utils.getStyleNumValue(leftMargin) + utils.getStyleNumValue(rightMargin);
+    let result = 0;
+    if (parentTag) {
+      const style2 = window.getComputedStyle(parentTag, null);
+      if (style2) {
+        const leftPad2 = style2.getPropertyValue("padding-left");
+        const rightPad2 = style2.getPropertyValue("padding-right");
+        const sumPad2 = utils.getStyleNumValue(leftPad2) + utils.getStyleNumValue(rightPad2);
+        result += sumPad2 + sumMargin;
+      }
+    }
+    result += sumPad + sumMargin + tag.clientWidth;
+    resolve(result);
+  });
 };
 dom.content = (selector, content, prepend) => {
   const self2 = dom;
@@ -174,33 +179,45 @@ dom.createSVGTag = (name, config) => {
   }
   return newEl;
 };
-dom.createTag = (name, config) => {
-  if (!name || name === "") {
-    console.error(`createTag() "name" argument is missing --> config: `, config);
+dom.createTag = (nameOrConfig, config) => {
+  const utils = dom.utils;
+  let m_props;
+  if (!nameOrConfig || nameOrConfig === "") {
+    console.error("createTag() 'required first argument is missing a value. Second argument --> ", config);
     return;
   }
-  const utils = dom.utils;
-  const newEl = utils.createTagNS(name);
-  if (!config || !utils.isObject(config)) {
-    return newEl;
+  if (utils.isObject(nameOrConfig)) {
+    if (!nameOrConfig.name) {
+      console.error("createTag() 'object is missing the key 'name' with string value tag name. Object --> ", nameOrConfig);
+      return;
+    }
+    if (!utils.isString(nameOrConfig.name) || nameOrConfig.name === "") {
+      console.error("createTag() 'object key 'name' must be string value tag name. Object --> ", nameOrConfig);
+      return;
+    }
+    m_props = { ...nameOrConfig };
+  } else {
+    m_props = { ...config };
+    m_props.name = nameOrConfig;
   }
-  switch (name) {
+  const newEl = utils.createTagNS(m_props.name);
+  switch (m_props.name) {
     case "input":
     case "textarea":
     case "select":
     case "option":
     case "output":
-      newEl.value = config.text ? config.text : "";
+      newEl.value = m_props.text ? m_props.text : "";
       break;
     default:
-      newEl.innerText = config.text ? config.text : "";
+      newEl.innerText = m_props.text ? m_props.text : "";
       break;
   }
-  dom.setProps(newEl, config.prop);
-  dom.setAttr(newEl, config.attr);
-  utils.setEvent(newEl, config.event);
-  if (config.class && config.class !== "") {
-    newEl.className = config.class;
+  dom.setProps(newEl, m_props.prop);
+  dom.setAttr(newEl, m_props.attr);
+  utils.setEvent(newEl, m_props.event);
+  if (m_props.class && m_props.class !== "") {
+    newEl.className = m_props.class;
   }
   return newEl;
 };
