@@ -5,6 +5,7 @@ dom.computeTagHeight = (tag) => {
 
 		if (!style) {
 			resolve();
+
 			return;
 		}
 

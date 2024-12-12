@@ -5,6 +5,7 @@ dom.computeTagWidth = (tag, parentTag) => {
 
 		if (!style) {
 			resolve();
+
 			return;
 		}
 
@@ -18,6 +19,7 @@ dom.computeTagWidth = (tag, parentTag) => {
 
 		if (parentTag) {
 			const style = window.getComputedStyle(parentTag, null);
+
 			if (style) {
 				const leftPad = style.getPropertyValue("padding-left");
 				const rightPad = style.getPropertyValue("padding-right");

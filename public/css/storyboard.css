@@ -168,6 +168,17 @@ mambo-tab-img .middle {
   background-color: transparent;
 }
 
+.red-background {
+  background-color: red;
+  padding: 10px;
+}
+
+.green-background {
+  background-color: green;
+  padding: 10px;
+}
+
+
 /* scroll bars */
 ::-webkit-scrollbar {
   width: 10px;

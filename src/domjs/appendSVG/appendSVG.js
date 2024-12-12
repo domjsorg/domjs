@@ -1,10 +1,10 @@
 dom.appendSVG = (selector, content, prepend) => {
 	if (!content || !selector) {
 		console.error("DOM.addSVGChild(): missing parameter 'selector', 'content' or both.");
+
 		return;
 	}
 
-	// Parse content if String type
 	if (typeof content === "string") {
 		// Create a dummy receptacle
 		let receptacle = document.createElement("div");

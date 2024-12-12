@@ -22,6 +22,6 @@ dom.getTags = (selector, parent) => {
 	console.log(
 		"DOM.getTags(): you have used document.querySelectorAll('') that returns DOM tags that are not 'LIVE' therefore won't automatically stay in sync with the browser therefore, it's not recommended. Try a direct String selector."
 	);
-	
+
 	return element.querySelectorAll(selector);
 };

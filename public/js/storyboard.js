@@ -14,14 +14,11 @@ function installStoryboard(context) {
 	const getModules = Promise.all(
 		context.map(async ({ name, alias }) => {
 			const demoPath = `src/domjs/${name}/demo/${alias}.js`;
-			const docPath = `src/domjs/${name}/demo/description.md`;
 			const codePath = `src/domjs/${name}/${name}.js`;
 			const demoResponse = await fetch(`/getFile?path=${encodeURIComponent(demoPath)}`);
-			const docResponse = await fetch(`/getFile?path=${encodeURIComponent(docPath)}`);
 			const codeResponse = await fetch(`/getFile?path=${encodeURIComponent(codePath)}`);
 			const codeContent = await codeResponse.text();
 			const demoContent = await demoResponse.text();
-			const docContent = await docResponse.text();
 
 			demodomjs.components.push({
 				alias,
@@ -31,7 +28,6 @@ function installStoryboard(context) {
 				name,
 				code: codeContent,
 				demo: demoContent,
-				documentation: docContent,
 			});
 		})
 	);
@@ -55,7 +51,7 @@ function installStoryboard(context) {
 	window.addEventListener("compiler-ready", () => {
 		demodomjs.manager = new (function demoManager() {
 			const OUTPUT_PATH = "/";
-			const AREAS = ["area-documentation", "area-code"];
+			const AREAS = ["area-documentation", "area-src-code", "area-code-example", "area-demo"];
 			let documentations = {};
 
 			setup();
@@ -89,6 +85,8 @@ function installStoryboard(context) {
 						action: () => {
 							outputDocumentation(story.name);
 							outputCode(story.name);
+							outputStorie(story.name);
+							outputDemo(story.name);
 						},
 					});
 				});
@@ -106,8 +104,17 @@ function installStoryboard(context) {
 								area: AREAS[0],
 							},
 							{
-								text: "Code",
+								text: "Source",
+								area: AREAS[1],
+							},
+							{
+								text: "Example",
 								area: AREAS[2],
+							},
+							{
+								text: "Demo",
+								area: AREAS[3],
+								fnClick: () => gotoCurrentUrl(),
 							},
 						],
 					},
@@ -118,7 +125,9 @@ function installStoryboard(context) {
 					},
 					contents: [
 						dom.createTag("documentation-container", { attr: { id: AREAS[0] }, class: "documentation-container" }),
-						dom.createTag("code-container", { attr: { id: AREAS[1] } }),
+						dom.createTag("source-code-container", { attr: { id: AREAS[1] } }),
+						dom.createTag("code-example-container", { attr: { id: AREAS[2] } }),
+						dom.createTag("demo-container", { attr: { id: AREAS[3] } }),
 					],
 				};
 
@@ -133,6 +142,14 @@ function installStoryboard(context) {
 
 				const treeViewConfig = {
 					parentTag: "storyboard-treeview",
+					tags: {
+						itemIn: {
+							attr: {
+								onmouseover: "this.style.backgroundColor='black'",
+								onmouseout: "this.style.backgroundColor='transparent'",
+							},
+						},
+					},
 					data: [
 						{
 							text: "Domjs Methods",
@@ -147,7 +164,13 @@ function installStoryboard(context) {
 			}
 
 			function goTo({ itemData }) {
-				router.push({ path: `/${itemData.id}` });
+				if (itemData.id) router.push({ path: `/${itemData.id}` });
+			}
+
+			function gotoCurrentUrl() {
+				const lastSegment = window.location.pathname.split("/").pop();
+				router.push({ path: "/" });
+				router.push({ path: lastSegment });
 			}
 
 			function slugify(text) {
@@ -199,7 +222,7 @@ function installStoryboard(context) {
 			}
 
 			function outputCode(id) {
-				const container = dom.getTag("#area-code");
+				const container = dom.getTag("source-code-container");
 				const component = demodomjs.components.find((item) => id === item.component);
 				container.innerText = null;
 
@@ -209,6 +232,31 @@ function installStoryboard(context) {
 				});
 
 				container.appendChild(codeElement);
+			}
+
+			function outputStorie(id) {
+				const container = dom.getTag("code-example-container");
+				const component = demodomjs.components.find((item) => id === item.component);
+				container.innerText = null;
+
+				const codeElement = dom.createTag("pre", {
+					class: "prettyprint",
+					text: component.demo,
+				});
+
+				container.appendChild(codeElement);
+			}
+
+			function outputDemo(id) {
+				const storyParentTag = dom.getTag("demo-container");
+				storyParentTag.innerHTML = null;
+				const fnName = `story${id.charAt(0).toUpperCase() + id.slice(1)}`;
+
+				const storyFn = window[fnName];
+
+				if (typeof storyFn === "function") {
+					storyFn(storyParentTag);
+				}
 			}
 
 			function setupHomeButton() {
