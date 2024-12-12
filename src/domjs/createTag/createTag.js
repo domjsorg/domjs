@@ -4,17 +4,20 @@ dom.createTag = (nameOrConfig, config) => {
 
 	if (!nameOrConfig || nameOrConfig === "") {
 		console.error("createTag() 'required first argument is missing a value. Second argument --> ", config);
+
 		return;
 	}
 
 	if (utils.isObject(nameOrConfig)) {
 		if (!nameOrConfig.name) {
 			console.error("createTag() 'object is missing the key 'name' with string value tag name. Object --> ", nameOrConfig);
+
 			return;
 		}
 
 		if (!utils.isString(nameOrConfig.name) || nameOrConfig.name === "") {
 			console.error("createTag() 'object key 'name' must be string value tag name. Object --> ", nameOrConfig);
+
 			return;
 		}
 

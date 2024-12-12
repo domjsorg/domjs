@@ -5,8 +5,10 @@ const LIB_NAME = "domjs";
 const LIB_VERSION = version;
 const LIB_FILE_NAME = `${LIB_NAME}-${LIB_VERSION}`;
 const LIB_FILE_NAME_MIN = `${LIB_NAME}-min-${LIB_VERSION}`;
-const SRC_DOMJS = "src/domjs";
+const SRC_DOMJS = `${config.SRC_DIR}/domjs`;
 const CURRENT_YEAR = new Date().getFullYear();
+const PUBLIC_DIR = config.PUBLIC_DIR;
+const STORIES_FILE_NAME = `${LIB_NAME}-${LIB_VERSION}-stories`;
 
 const COPYRIGHT = `/******************************************
 *  Copyright ${CURRENT_YEAR} Alejandro Sebastian Scotti, Scotti Corp.
@@ -36,6 +38,8 @@ module.exports = {
 	LIB_FILE_NAME_MIN,
 	SRC_DOMJS,
 	COPYRIGHT,
+	STORIES_FILE_NAME,
+	PUBLIC_DIR,
 };
 
 function dateFormat() {

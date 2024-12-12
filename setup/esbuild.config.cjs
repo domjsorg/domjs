@@ -1,6 +1,7 @@
 const fs = require("fs");
 const esbuild = require("esbuild");
 const config = require("./esconfig.cjs");
+const path = require("path");
 
 function buildLib() {
 	const libVersion = config.LIB_VERSION;
@@ -10,12 +11,14 @@ function buildLib() {
 	const headerFn = "\nfunction domJS() { \nconst dom = {};";
 	const footerFn = "\nreturn dom;\n}";
 
+	const { arrFiles, arrFilesStories } = getLibFiles();
+
 	// Bundle Native
 	const optionsBundle = {
 		stdin: { contents: "" },
 		banner: { js: config.COPYRIGHT + headerFn },
 		footer: { js: footerFn },
-		inject: getLibFiles(),
+		inject: arrFiles,
 		entryNames: config.LIB_FILE_NAME,
 		outdir: `${config.LIB_DIR}/${libVersion}`,
 	};
@@ -30,36 +33,80 @@ function buildLib() {
 		sourcemap: true,
 	};
 
+	const getStoriesContent = (arrFilesStories) => {
+		return arrFilesStories
+			.map((file) => {
+				const content = fs.readFileSync(file, "utf8");
+
+				return content;
+			})
+			.join("\n");
+	};
+
+	const optionsBundleStories = {
+		stdin: {
+			contents: getStoriesContent(arrFilesStories),
+		},
+		entryNames: config.STORIES_FILE_NAME,
+		outdir: `${config.PUBLIC_DIR}/js`,
+	};
+
 	esbuild.build(optionsBundle).then((result) => {
 		console.log("Bundle JS Lib: Build complete!");
 	});
 
 	esbuild.build(optionsMinifyMap).then((result) => {
 		console.log("JS Lib Minify mapped: Build complete!");
+		copyFiles();
+	});
+
+	esbuild.build(optionsBundleStories).then(() => {
+		console.log("Stories: Build complete!");
 	});
 }
 
 function getLibFiles() {
 	const arrFiles = [];
-	const files = fs.readdirSync(`${config.SRC_DOMJS}`);
+	const arrFilesStories = [];
 
-	files.forEach((file) => {
-		let component = `${config.SRC_DOMJS}/${file}`;
-		let componentName = file;
-		if (fs.lstatSync(component).isDirectory() && !file.startsWith("_")) {
-			let componentFiles = fs.readdirSync(component);
-			componentFiles.forEach((filejs) => {
-				if (filejs.endsWith(".js")) {
-					const filepath = `${config.SRC_DOMJS}/${componentName}/${filejs}`;
-					arrFiles.push(filepath);
+	function processDirectory(directory) {
+		const files = fs.readdirSync(directory);
+		files.forEach((file) => {
+			const fullPath = `${directory}/${file}`;
+
+			if (fs.lstatSync(fullPath).isDirectory() && !file.startsWith("_")) {
+				if (file === "demo") {
+					const storyFiles = fs.readdirSync(fullPath).filter((f) => f.endsWith(".js"));
+					storyFiles.forEach((storyFile) => {
+						arrFilesStories.push(`${fullPath}/${storyFile}`);
+					});
+				} else {
+					processDirectory(fullPath);
 				}
-			});
-		}
-	});
+			} else if (file.endsWith(".js")) {
+				arrFiles.push(fullPath);
+			}
+		});
+	}
 
-	console.log(arrFiles);
+	processDirectory(config.SRC_DOMJS);
 
-	return arrFiles;
+	console.log("Main Files:", arrFiles);
+	console.log("Story Files:", arrFilesStories);
+
+	return { arrFiles, arrFilesStories };
+}
+
+function copyFilesToPublic(srcDir, fileName, destDir) {
+	const srcPath = path.join(srcDir, fileName);
+	const destPath = path.join(destDir, fileName);
+	fs.copyFileSync(srcPath, destPath);
+}
+
+function copyFiles() {
+	const libVersion = config.LIB_VERSION;
+	const libDir = `${config.LIB_DIR}/${libVersion}`;
+	copyFilesToPublic(libDir, `${config.LIB_FILE_NAME}.js`, `${config.PUBLIC_DIR}/js`);
 }
 
 for (var i = 0; i < process.argv.length; i++) {

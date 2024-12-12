@@ -27,6 +27,10 @@ export default [
 				ui: true,
 				object: true,
 				marked: true,
+				mamboTools: true,
+				mamboUI: true,
+				domJsMethods: true,
+				domJS: true,
 			},
 
 			ecmaVersion: 11,
