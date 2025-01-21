@@ -81,6 +81,7 @@ dom.utils = new (function () {
 			if (parts[i] in property === false) {
 				return "";
 			}
+
 			property = property[parts[i]];
 		}
 
@@ -147,11 +148,13 @@ dom.utils = new (function () {
 
 	function setEvent(tagEle, events) {
 		const tag = dom.getTag(tagEle);
+
 		if (tag && !isString(tag) && events && isObject(events)) {
 			for (const key in events) {
 				tag.addEventListener(key, events[key]);
 			}
 		}
+		
 		return self;
 	}
 
